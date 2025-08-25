@@ -1,2 +1,5 @@
 # Ignore the dataset folder
 neural_network/dataset/
+
+# Macbook stuff
+.DS_Store
