@@ -40,3 +40,10 @@ values, indices = torch.max(x, dim = 0) # the dimensions you want to reduce to
 print(values, indices)
 
 x = torch.mean(x.float(), dim = 0) # outputs the mean
+
+z = torch.clamp(x, min = 0, max =10) # it s RELU function basically
+
+boolma = torch.tensor([1,0,1,1,1], dtype = torch.bool)
+z = torch.any(boolma) # any one in the tensor
+z2 =torch.all(boolma) # all the values are non zero
+print(z, z2)
