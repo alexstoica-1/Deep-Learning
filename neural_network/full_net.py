@@ -7,6 +7,8 @@ from torch.utils.data import DataLoader
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
 
+import time
+
 # Create the fully-connected NN
 class NN(nn.Module):
     def __init__(self, input_size, num_classes):
@@ -41,7 +43,7 @@ train_dataset = datasets.MNIST(root = 'neural_network/dataset/', train = True, t
 train_loader = DataLoader(dataset = train_dataset, batch_size = batch_size, shuffle = True)
 
 test_dataset = datasets.MNIST(root = 'neural_network/dataset/', train = False, transform = transforms.ToTensor(), download = True)
-test_loader = DataLoader(dataset = train_dataset, batch_size = batch_size, shuffle = True)
+test_loader = DataLoader(dataset = test_dataset, batch_size = batch_size, shuffle = True)
 
 # Network
 model = NN(input_size=input_size, num_classes=num_classes).to(device)
@@ -53,6 +55,7 @@ optimizer = optim.Adam(model.parameters(), lr =learning_rate)
 # Train Network
 
 for epoch in range(num_epochs):
+    epoch_start = time.time()
     for batch_idx, (data, targets) in enumerate(train_loader):
         data = data.to(device = device)
         targets = targets.to(device = device)
@@ -70,6 +73,9 @@ for epoch in range(num_epochs):
 
         # Gradient Descent or Adam step
         optimizer.step()
+
+    epoch_end = time.time()
+    print(f"Epoch {epoch+1} took {epoch_end - epoch_start:.2f} seconds.")
 
 def check_accuracy(loader, model):
     if loader.dataset.train:
