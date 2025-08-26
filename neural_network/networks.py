@@ -12,7 +12,7 @@ import time
 # Create the fully-connected NN
 class NN(nn.Module):
     def __init__(self, input_size, num_classes):
-        super(NN, self).__init__()
+        super(NN, self).__init__() 
         self.fc1 = nn.Linear(input_size, 50)
         self.fc2 = nn.Linear(50, num_classes)
 
