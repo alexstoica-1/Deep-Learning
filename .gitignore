@@ -3,3 +3,6 @@ neural_network/dataset/
 
 # Macbook stuff
 .DS_Store
+
+# Ignore the datset folder
+dl_models/dataset/
