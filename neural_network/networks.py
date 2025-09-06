@@ -74,7 +74,6 @@ optimizer = optim.Adam(model.parameters(), lr =learning_rate)
 optimizer_cnn = optim.Adam(model_cnn.parameters(), lr =learning_rate)
 
 # Train FeedForward Network
-
 for epoch in range(num_epochs):
     epoch_start = time.time()
     for batch_idx, (data, targets) in enumerate(train_loader):
