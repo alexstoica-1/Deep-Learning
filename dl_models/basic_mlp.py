@@ -135,13 +135,11 @@ for epoch in range(num_epochs):
         # LOGGING
         if not batch_idx % 100:
             print ('Epoch: %03d/%03d | Batch %03d/%03d | Cost: %.4f' 
-                   %(epoch+1, num_epochs, batch_idx, 
-                     len(train_loader), loss))
+                   %(epoch+1, num_epochs, batch_idx, len(train_loader), loss))
 
     with torch.set_grad_enabled(False):
-        print('Epoch: %03d/%03d training accuracy: %.2f%%' % (
-              epoch+1, num_epochs, 
-              compute_accuracy(model, train_loader)))
+        print('Epoch: %03d/%03d training accuracy: %.2f%%' 
+              % (epoch+1, num_epochs, compute_accuracy(model, train_loader)))
         
     print('Time elapsed: %.2f min' % ((time.time() - start_time)/60))
     
