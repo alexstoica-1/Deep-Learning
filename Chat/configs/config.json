@@ -1,0 +1,5 @@
+{
+  "intents": "/Users/alexisgod/Desktop/Deep Learning/Chat/intents.json",
+  "model_dir": "/Users/alexisgod/Desktop/Deep Learning/Chat/models/chatbot_model.pth",
+  "dimensions_dir": "/Users/alexisgod/Desktop/Deep Learning/Chat/models/dimensions.json"
+}

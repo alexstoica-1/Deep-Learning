@@ -3,23 +3,6 @@ import json
 import random
 
 import nltk
-
-try:
-    nltk.data.find('tokenizers/punkt')
-except LookupError:
-    nltk.download('punkt', quiet=True)
-
-try:
-    nltk.data.find('tokenizers/punkt_tab')
-except LookupError:
-    nltk.download('punkt_tab', quiet=True)
-
-try:
-    nltk.data.find('corpora/wordnet')
-except LookupError:
-    nltk.download('wordnet', quiet=True)
-    nltk.download('omw-1.4', quiet=True)
-
 import numpy as np
 
 import torch
@@ -29,6 +12,7 @@ import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 from typing import List, Dict, Optional, Tuple
 
+from utils.stocks import get_stocks
 
 class ChatbotModel(nn.Module):
 
@@ -66,6 +50,7 @@ class ChatbotAssistant:
         self.X: Optional[np.ndarray] = None
         self.y: Optional[np.ndarray] = None
 
+    # it does not use self
     @staticmethod
     def tokenize_and_lemmatize(text):
         lemmatizer = nltk.WordNetLemmatizer()
@@ -125,6 +110,7 @@ class ChatbotAssistant:
             raise ValueError("Training data not prepared. Call prepare_data() before train_model().")
         if self.X.size == 0 or self.y.size == 0:
             raise ValueError("Training data is empty. Ensure intents.json contains patterns.")
+        
         X_tensor = torch.tensor(self.X, dtype=torch.float32)
         y_tensor = torch.tensor(self.y, dtype=torch.long)
 
@@ -155,6 +141,7 @@ class ChatbotAssistant:
             raise ValueError("No model to save. Train or load a model first.")
         if self.X is None:
             raise ValueError("Input dimensions unknown. Prepare data before saving dimensions.")
+        
         torch.save(self.model.state_dict(), model_path)
         with open(dimensions_path, 'w') as f:
             json.dump({ 'input_size': int(self.X.shape[1]), 'output_size': len(self.intents) }, f)
@@ -194,23 +181,20 @@ class ChatbotAssistant:
             return None
 
 
-def get_stocks():
-    stocks = ['AAPL', 'META', 'NVDA', 'GS', 'MSFT']
-
-    print(random.sample(stocks, 3))
-
-
 if __name__ == '__main__':
-    assistant = ChatbotAssistant('/Users/alexisgod/Desktop/Deep Learning/Chat/intents.json', function_mappings = {'stocks': get_stocks})
+    with open("configs/config.json") as f:
+        config =json.load(f)
+
+    assistant = ChatbotAssistant(intents_path = config["intents"], function_mappings = {'stocks': get_stocks})
     assistant.parse_intents()
     assistant.prepare_data()
     assistant.train_model(batch_size=8, lr=0.001, epochs=100)
 
-    assistant.save_model('/Users/alexisgod/Desktop/Deep Learning/Chat/chatbot_model.pth', '/Users/alexisgod/Desktop/Deep Learning/Chat/dimensions.json')
+    assistant.save_model(model_path = config["model_dir"],  dimensions_path = config["dimensions_dir"])
 
-    assistant = ChatbotAssistant('/Users/alexisgod/Desktop/Deep Learning/Chat/intents.json', function_mappings = {'stocks': get_stocks})
+    assistant = ChatbotAssistant(intents_path = config["intents"], function_mappings = {'stocks': get_stocks})
     assistant.parse_intents()
-    assistant.load_model('/Users/alexisgod/Desktop/Deep Learning/Chat/chatbot_model.pth', '/Users/alexisgod/Desktop/Deep Learning/Chat/dimensions.json')
+    assistant.load_model(model_path = config["model_dir"], dimensions_path = config["dimensions_dir"])
 
     while True:
         message = input('Enter your message:')

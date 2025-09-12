@@ -6,3 +6,7 @@ neural_network/dataset/
 
 # Ignore the datset folder
 dl_models/dataset/
+
+# Ignore paths
+Chat/configs/config.json/
+!Chat/configs/.gitkeep
