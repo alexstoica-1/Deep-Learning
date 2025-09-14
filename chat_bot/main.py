@@ -203,3 +203,4 @@ if __name__ == '__main__':
             break
 
         print(assistant.process_message(message))
+        
