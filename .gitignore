@@ -10,3 +10,5 @@ dl_models/dataset/
 # Ignore paths
 Chat/configs/config.json/
 !Chat/configs/.gitkeep
+
+.idea/
